@@ -27,6 +27,7 @@ long IPlot::Plot()
     scx = *max_element(x.begin(),x.end());
     scy = *max_element(y.begin(),y.end());
     Plot(x,y,1.0*scx,1.5*scy);
+    return 0;
 }
 
 long IPlot::Save(std::string filename)
@@ -47,12 +48,14 @@ long IPlot::Save(std::string filename)
     }
 
     datafile.close();
+    return 0;
 }
 
 long IPlot::Plot(std::vector<double> datax, std::vector<double> datay, double scalex, double scaley)
 {
 
 
+    cout << "Plotting " << endl;
 
     plt.fspace(-scalex, scalex, -scaley, scaley);
     //plt.fscale(2,2);
@@ -77,7 +80,7 @@ long IPlot::Plot(std::vector<double> datax, std::vector<double> datay, double sc
     plt.flushpl();
     plt.closepl();
 
-
+    return 0;
 }
 
 long IPlot::PlotAndSave(std::vector<double> datax, std::vector<double> datay, double scalex, double scaley, std::string filename)
@@ -105,6 +108,7 @@ long IPlot::PlotAndSave(std::vector<double> datax, std::vector<double> datay, do
     datafile.close();
 
 
+    return 0;
 }
 
 long IPlot::InitPlot()
