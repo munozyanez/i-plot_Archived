@@ -2,6 +2,8 @@
 
 IPlot::IPlot()
 {
+    InitPlot();
+    Ts=0.01;
 
 }
 
