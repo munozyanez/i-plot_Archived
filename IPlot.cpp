@@ -25,7 +25,7 @@ long IPlot::pushBack(double new_value)
 long IPlot::Plot()
 {
 
-    double scx,scy;
+
     scx = *max_element(x.begin(),x.end());
     scy = *max_element(y.begin(),y.end());
     Plot(x,y,1.0*scx,1.5*scy);
@@ -64,7 +64,12 @@ long IPlot::Plot(std::vector<double> datax, std::vector<double> datay, double sc
     plt.openpl();
     plt.pencolorname("blue");
 
-
+    yLabel << "   yMax: " << scy;
+//    std::string copyOfStr = stringStream.str();
+    //    plt.move(0.5*scalex,0.5*scaley);
+//    sprintf (yLabel, "   yMax: %f ", scaley);
+    //    cout << scalex;
+    plt.label(yLabel.str().c_str());
 
     for (ulong i=1; i<datax.size(); i++)
     {
@@ -77,6 +82,8 @@ long IPlot::Plot(std::vector<double> datax, std::vector<double> datay, double sc
         //plt.flushpl();
 
     }
+
+
 
     plt.endpath();
     plt.flushpl();

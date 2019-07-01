@@ -7,6 +7,7 @@
 #include <plot.h>
 #include <fstream>      // std::fstream
 #include <algorithm>    // std::min_element, std::max_element
+#include <sstream>
 
 #include <iostream>
 //#include <plplot/plplot.h>
@@ -38,8 +39,12 @@ private:
 
     XPlotter plt;
 
+    ostringstream yLabel;
+
+    double scx,scy; //x and y axis maximum values
 
     long InitPlot();
+
 
     //PlotterParams puPlotParams;
 };
