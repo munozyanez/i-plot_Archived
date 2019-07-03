@@ -26,9 +26,9 @@ long IPlot::Plot()
 {
 
 
-    scx = *max_element(x.begin(),x.end());
-    scy = *max_element(y.begin(),y.end());
-    Plot(x,y,1.0*scx,1.5*scy);
+    xMax = *max_element(x.begin(),x.end());
+    yMax = *max_element(y.begin(),y.end());
+    Plot(x,y,1.0*xMax,1.5*yMax);
     return 0;
 }
 
@@ -64,18 +64,29 @@ long IPlot::Plot(std::vector<double> datax, std::vector<double> datay, double sc
     plt.openpl();
     plt.pencolorname("blue");
 
-    yLabel << "   yMax: " << scy;
+    double offset=0.15,x0,x1,y0,y1;
+
+    PlotAxis(scalex,scaley,offset);
+
+    yLabel << "   yMax: " << yMax;
 //    std::string copyOfStr = stringStream.str();
     //    plt.move(0.5*scalex,0.5*scaley);
 //    sprintf (yLabel, "   yMax: %f ", scaley);
     //    cout << scalex;
+    plt.fmove(0.5,0.9);
     plt.label(yLabel.str().c_str());
+
+
 
     for (ulong i=1; i<datax.size(); i++)
     {
+        x0=datax[i-1]/scalex;
+        y0=datay[i-1]/scaley;
+        x1=datax[i]/scalex;
+        y1=datay[i]/scaley;
         //plt.fpoint(datax[i]/scalex,datay[i]/scaley);
-        plt.fmove(datax[i]/scalex,datay[i]/scaley);
-        plt.fline(datax[i-1]/scalex,datay[i-1]/scaley,datax[i]/scalex,datay[i]/scaley);
+        plt.fmove(offset+x1,offset+y1);
+        plt.fline(offset+x0,offset+y0,offset+x1,offset+y1);
         //plt.fcircle(datax[i]/scalex,datay[i]/scaley,std::max(scalex,scaley)/10000.);
 
         //plt.endpath();
@@ -118,6 +129,25 @@ long IPlot::PlotAndSave(std::vector<double> datax, std::vector<double> datay, do
 
 
     return 0;
+}
+
+long IPlot::PlotAxis(double scalex, double scaley, double offset)
+{
+
+char yMarker[100];
+
+plt.fmove(offset,offset);
+    for (ulong i=1; i<10; i++)
+    {
+        //plt.fpoint(datax[i]/scalex,datay[i]/scaley);
+
+        plt.fmove(0,offset+(double)i/10);
+        sprintf(yMarker, " y = %.2f ", (double)(scaley*i/10));
+        plt.label(yMarker);
+
+
+    }
+
 }
 
 long IPlot::InitPlot()

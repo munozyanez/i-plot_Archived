@@ -28,6 +28,8 @@ public:
     long Plot(std::vector<double> datax, std::vector<double> datay, double scalex, double scaley);
     long PlotAndSave(std::vector<double> datax, std::vector<double> datay, double scalex, double scaley, std::string filename);
 
+    long PlotAxis(double scalex, double scaley, double offset);
+
 
 private:
 
@@ -41,7 +43,7 @@ private:
 
     ostringstream yLabel;
 
-    double scx,scy; //x and y axis maximum values
+    double xMax,yMax; //x and y axis maximum values
 
     long InitPlot();
 
