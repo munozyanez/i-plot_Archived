@@ -48,6 +48,7 @@ long IPlot::Save(std::string filename)
 
 
     }
+    cout << "Saved at: " << filename << endl;
 
     datafile.close();
     return 0;
@@ -127,6 +128,16 @@ long IPlot::PlotAndSave(std::vector<double> datax, std::vector<double> datay, do
 
     datafile.close();
 
+
+    return 0;
+}
+
+
+long IPlot::PlotAndSave(string filename)
+{
+
+    Plot();
+    Save(filename);
 
     return 0;
 }
