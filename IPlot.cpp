@@ -158,7 +158,7 @@ plt.fmove(offset,offset);
 
 
     }
-
+return 0;
 }
 
 long IPlot::InitPlot()
