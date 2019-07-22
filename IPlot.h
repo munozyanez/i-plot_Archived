@@ -31,6 +31,7 @@ public:
     long PlotAxis(double scalex, double scaley, double offset);
 
 
+    long PlotAndSave(string filename);
 private:
 
 
