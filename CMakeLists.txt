@@ -8,6 +8,8 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 #deps
 find_package(PLOTUTILS REQUIRED)
+include(FindGnuplot)
+#find_package(GNUPLOT REQUIRED)
 
 # source files
 aux_source_directory(. PLOT_SRCS)

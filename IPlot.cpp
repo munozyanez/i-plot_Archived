@@ -1,16 +1,32 @@
 #include "IPlot.h"
 
-IPlot::IPlot()
+IPlot::IPlot(double sampleTime, string new_xLabel, string new_yLabel, string new_title)
 {
-    InitPlot();
-    Ts=0.01;
+    Ts=sampleTime;
+    x.clear();
+    x.push_back(0.);
+    y.clear();
+    y.push_back(0.);
+    xLabel = "'"+new_xLabel+"'"; //labels in gnuplot need the ' '.
+    yLabel = "'"+new_yLabel+"'"; //labels in gnuplot need the ' '.
+    title = "'"+new_title+"'"; //labels in gnuplot need the ' '.
+    figure = GNUPLOT_POPEN("gnuplot -persistent", "w");
+//    figdata = GNUPLOT_POPEN("gnuplot", "w");
 
 }
 
-IPlot::IPlot(double sampleTime)
+IPlot::~IPlot()
 {
-    InitPlot();
-    Ts=sampleTime;
+    GNUPLOT_PCLOSE(figure);
+
+}
+
+
+long IPlot::SetParameters(string new_parameters)
+{
+    parameters = new_parameters;
+
+    return 0;
 }
 
 long IPlot::pushBack(double new_value)
@@ -26,9 +42,9 @@ long IPlot::Plot()
 {
 
 
-    xMax = *max_element(x.begin(),x.end());
-    yMax = *max_element(y.begin(),y.end());
-    Plot(x,y,1.0*xMax,1.5*yMax);
+//    xMax = *max_element(x.begin(),x.end());
+//    yMax = *max_element(y.begin(),y.end());
+    Plot(x,y,0,0);
     return 0;
 }
 
@@ -54,40 +70,27 @@ long IPlot::Save(std::string filename)
     return 0;
 }
 
+/* old version using plotter
 long IPlot::Plot(std::vector<double> datax, std::vector<double> datay, double scalex, double scaley)
 {
+    PlotterParams newParams;
+    newParams.setplparam("PAGESIZE", (char *)"a4");
+    newParams.setplparam("BITMAPSIZE", (char *)"600x600");
 
-
-    cout << "Plotting " << endl;
-
+    XPlotter plt(newParams);
     plt.fspace(-scalex, scalex, -scaley, scaley);
     //plt.fscale(2,2);
     plt.openpl();
     plt.pencolorname("blue");
 
-    double offset=0.15,x0,x1,y0,y1;
-
-    PlotAxis(scalex,scaley,offset);
-
-    yLabel << "   yMax: " << yMax;
-//    std::string copyOfStr = stringStream.str();
-    //    plt.move(0.5*scalex,0.5*scaley);
-//    sprintf (yLabel, "   yMax: %f ", scaley);
-    //    cout << scalex;
-    plt.fmove(0.5,0.9);
-    plt.label(yLabel.str().c_str());
 
 
 
     for (ulong i=1; i<datax.size(); i++)
     {
-        x0=datax[i-1]/scalex;
-        y0=datay[i-1]/scaley;
-        x1=datax[i]/scalex;
-        y1=datay[i]/scaley;
         //plt.fpoint(datax[i]/scalex,datay[i]/scaley);
-        plt.fmove(offset+x1,offset+y1);
-        plt.fline(offset+x0,offset+y0,offset+x1,offset+y1);
+        plt.fmove(datax[i]/scalex,datay[i]/scaley);
+        plt.fline(datax[i-1]/scalex,datay[i-1]/scaley,datax[i]/scalex,datay[i]/scaley);
         //plt.fcircle(datax[i]/scalex,datay[i]/scaley,std::max(scalex,scaley)/10000.);
 
         //plt.endpath();
@@ -95,13 +98,48 @@ long IPlot::Plot(std::vector<double> datax, std::vector<double> datay, double sc
 
     }
 
+    //    plt.move(0.5*scalex,0.5*scaley);
+        sprintf (yLabel, "  yMax: %f ", scaley);
+        sprintf (xLabel, " 'x y Label' ");
 
+    //    cout << scalex;
+        plt.label(yLabel);
 
     plt.endpath();
     plt.flushpl();
     plt.closepl();
 
+
     return 0;
+
+}*/
+
+long IPlot::Plot(std::vector<double> datax, std::vector<double> datay, double scalex, double scaley)
+{
+
+
+//        sprintf (yLabel, "  yMax: %f ", scaley);
+//        sprintf (xLabel, " 'x y Label' ");
+
+
+    fprintf(figure,"%s \n","set grid");
+
+    fprintf(figure,"%s%s\n %s%s\n","set ylabel ", yLabel.c_str(), "set xlabel ", xLabel.c_str() );
+    fprintf(figure,"%s%s\n ","set title ", title.c_str() );
+
+    fprintf(figure,"%s \n",parameters.c_str());
+//    fprintf(figure,"%s \n","set style line 1 linewidth 30");
+
+    fprintf(figure,"%s\n","plot '-' lt rgb 'blue' with lines");
+    for (int i = 0; i < datay.size(); ++i)
+    {
+        fprintf(figure,"%f %f \n",datax[i],datay[i]);
+    }
+    fprintf(figure,"%s\n","EOF");
+
+
+    return 0;
+
 }
 
 long IPlot::PlotAndSave(std::vector<double> datax, std::vector<double> datay, double scalex, double scaley, std::string filename)
@@ -141,7 +179,7 @@ long IPlot::PlotAndSave(string filename)
 
     return 0;
 }
-
+/* unused??
 long IPlot::PlotAxis(double scalex, double scaley, double offset)
 {
 
@@ -159,22 +197,6 @@ plt.fmove(offset,offset);
 
     }
 return 0;
-}
+}*/
 
-long IPlot::InitPlot()
-{
 
-//    PlotterParams newParams;
-//    newParams.setplparam("PAGESIZE", (char *)"a4");
-//    newParams.setplparam("BITMAPSIZE", (char *)"600x600");
-    plt.parampl("PAGESIZE",(char *)"a4");
-    plt.parampl("BITMAPSIZE",(char *)"600x600");
-
-    Ts=0.01;
-    x.clear();
-    x.push_back(0.);
-    y.clear();
-    y.push_back(0.);
-    return 0;
-
-}

@@ -5,20 +5,47 @@
 #include <vector>
 #include <plotter.h>
 #include <plot.h>
+#include <stdio.h>
 #include <fstream>      // std::fstream
 #include <algorithm>    // std::min_element, std::max_element
-#include <sstream>
 
 #include <iostream>
+#include <sstream>
 //#include <plplot/plplot.h>
 //#include <plplot/plstream.h>
 #define NSIZE    101
+#define STRINGSIZE    255
+
+
+// Patch for Windows by Damien Loison
+#ifdef _WIN32
+#    include <windows.h>
+#    define GNUPLOT_PCLOSE _pclose
+#    define GNUPLOT_POPEN  _popen
+#    define GNUPLOT_FILENO _fileno
+#else
+#    define GNUPLOT_PCLOSE pclose
+#    define GNUPLOT_POPEN  popen
+#    define GNUPLOT_FILENO fileno
+#endif
+
+#ifdef _WIN32
+#    define GNUPLOT_ISNAN _isnan
+#else
+// cppreference.com says std::isnan is only for C++11.  However, this seems to work on Linux
+// and I am assuming that if isnan exists in math.h then std::isnan exists in cmath.
+#    define GNUPLOT_ISNAN std::isnan
+#endif
+
+using namespace std;
 
 class IPlot
 {
 public:
-    IPlot();
-    IPlot(double sampleTime);
+    IPlot(double sampleTime = 0.01, string new_xLabel = "", string new_yLabel = "", string new_title = "");
+    ~IPlot();
+
+    long SetParameters(string new_parameters);
 
     long pushBack(double new_value);
 
@@ -28,28 +55,30 @@ public:
     long Plot(std::vector<double> datax, std::vector<double> datay, double scalex, double scaley);
     long PlotAndSave(std::vector<double> datax, std::vector<double> datay, double scalex, double scaley, std::string filename);
 
-    long PlotAxis(double scalex, double scaley, double offset);
+//    long PlotAxis(double scalex, double scaley, double offset);
 
 
     long PlotAndSave(string filename);
+
+
 private:
 
 
 
     double Ts;
 
+    string xLabel;
+    string yLabel;
+    string title;
+
     std::vector<double> x,y;
 
-    XPlotter plt;
+    FILE* figure;
+//    FILE* figdata;
+    stringstream figdata;
+    string strdata;
 
-    ostringstream yLabel;
-
-    double xMax,yMax; //x and y axis maximum values
-
-    long InitPlot();
-
-
-    //PlotterParams puPlotParams;
+    string parameters;
 };
 
 #endif // PLOT_H
