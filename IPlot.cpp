@@ -1,17 +1,31 @@
 #include "IPlot.h"
 
-IPlot::IPlot(double sampleTime, string new_xLabel, string new_yLabel, string new_title)
+IPlot::IPlot(double sampleTime, string new_title, string new_xLabel, string new_yLabel)
 {
     Ts=sampleTime;
     x.clear();
-    x.push_back(0.);
+//    x.push_back(0.);
     y.clear();
-    y.push_back(0.);
+//    y.push_back(0.);
+    N=0;
     xLabel = "'"+new_xLabel+"'"; //labels in gnuplot need the ' '.
     yLabel = "'"+new_yLabel+"'"; //labels in gnuplot need the ' '.
     title = "'"+new_title+"'"; //labels in gnuplot need the ' '.
     figure = GNUPLOT_POPEN("gnuplot -persistent", "w");
 //    figdata = GNUPLOT_POPEN("gnuplot", "w");
+
+}
+
+IPlot::IPlot(vector<double> & new_y) : IPlot()
+{
+    y=new_y;
+    N=y.size();
+    x.resize(N);
+    for (int i = 0; i < N; ++i)
+    {
+        x[i]=i;
+    }
+
 
 }
 
@@ -32,7 +46,8 @@ long IPlot::SetParameters(string new_parameters)
 long IPlot::pushBack(double new_value)
 {
     y.push_back(new_value);
-    x.push_back(x.back()+Ts);
+    N++;
+    x.push_back(N*Ts);
 
     return 0;
 

@@ -42,7 +42,8 @@ using namespace std;
 class IPlot
 {
 public:
-    IPlot(double sampleTime = 0.01, string new_xLabel = "", string new_yLabel = "", string new_title = "");
+    IPlot(double sampleTime = 1, string new_title = "", string new_xLabel = "", string new_yLabel = "");
+    IPlot(vector<double> &new_y);
     ~IPlot();
 
     long SetParameters(string new_parameters);
@@ -72,6 +73,8 @@ private:
     string title;
 
     std::vector<double> x,y;
+
+    long N;
 
     FILE* figure;
 //    FILE* figdata;
