@@ -26,7 +26,7 @@ SUBDIR_LINK_NAMES
 Then, assuming the library is placed at "${PROJECT_SOURCE_DIR}/lib/i-plot/" (for example after clone with ``git clone https://github.com/munozyanez/i-plot.git ``, it is enough to add the following lines to CMakeLists.txt to add includes:
 
 ```cmake
-add_subdirectory(${PROJECT_SOURCE_DIR}/lib/fcontrol/)
+add_subdirectory(${PROJECT_SOURCE_DIR}/lib/i-plot/)
 INCLUDE_DIRECTORIES(${SUBDIR_INCLUDE_DIRECTORIES})
 ```
 
@@ -39,10 +39,10 @@ target_link_libraries( ${PROJECT_NAME} ${SUBDIR_LINK_NAMES} )
 Use the usual CMake and make install commands in order to compile and install library on the system
 
 ```
-git clone https://github.com/munozyanez/fcontrol.git
-mkdir .fcontrol-build
-cd .fcontrol-build
-cmake ../fcontrol
+git clone https://github.com/munozyanez/i-plot.git
+mkdir .i-plot-build
+cd .i-plot-build
+cmake ../i-plot
 make
 make install
 ```
