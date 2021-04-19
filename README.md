@@ -3,16 +3,15 @@
 # How to use
 
 This library is intended for the use with CMake build system. CmakeLists.txt is configured to search for the following dependencies as required:
-* fftw
-* eigen
+* GNUPlot
 
 You can install under a debian based linux with:
 ```
-sudo apt install fftw-dev libeigen3-dev
+sudo apt install gnuplot
 ```
 For ubuntu 18.04 LTS you need FFTW3 library instead, therefore:
 ```
-sudo  apt-get install libfftw3-dev libeigen3-dev
+sudo apt install gnuplot
 ```
 
 
