@@ -9,7 +9,7 @@ You can install under a debian based linux with:
 ```
 sudo apt install gnuplot
 ```
-For ubuntu 18.04 LTS you need FFTW3 library instead, therefore:
+For ubuntu 18.04 LTS:
 ```
 sudo apt install gnuplot
 ```
