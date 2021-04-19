@@ -3,8 +3,6 @@
 
 
 #include <vector>
-#include <plotter.h>
-#include <plot.h>
 #include <stdio.h>
 #include <fstream>      // std::fstream
 #include <algorithm>    // std::min_element, std::max_element
