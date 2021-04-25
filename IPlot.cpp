@@ -50,7 +50,17 @@ long IPlot::pushBack(double new_value)
     x.push_back(N*Ts);
 
     return 0;
+}
 
+long IPlot::Update(double new_value)
+{
+    y.push_back(new_value);
+    N++;
+    x.push_back(N*Ts);
+
+    fprintf(figure,"%f %f \n",N*Ts,new_value);
+    fprintf(figure,"reread \n");
+    return 0;
 }
 
 long IPlot::Plot()

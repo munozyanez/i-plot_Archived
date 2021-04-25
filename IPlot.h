@@ -47,6 +47,7 @@ public:
     long SetParameters(string new_parameters);
 
     long pushBack(double new_value);
+    long Update(double new_value);
 
     long Plot();
     long Save(string filename);
